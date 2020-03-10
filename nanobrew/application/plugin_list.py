@@ -24,5 +24,5 @@ class PluginList:
             logging.debug("Activating plugin " + plugin_name)
             plugin = importlib.import_module(plugin_name)
             await plugin.activate(app)
-        except ImportError:
-            logging.error("Can not import plugin " + plugin_name + ", skipping")
+        except ImportError as error:
+            logging.error("Can not import plugin " + plugin_name + ", skipping... " + str(error))

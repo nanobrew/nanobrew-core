@@ -1,7 +1,7 @@
 import logging
 
 from nanobrew.app import App
-from nanobrew.domain.config.parameter import Parameter
+from nanobrew.domain.parameter import Parameter
 
 from .dummy import DummySensorType
 
