@@ -4,8 +4,13 @@ import sys
 
 from nanobrew.app import App
 from nanobrew.domain.brewery import Brewery
+from nanobrew.domain.sensor_list import SensorList
+from nanobrew.domain.actor_list import ActorList
+from nanobrew.domain.kettle_list import KettleList
 from nanobrew.application.plugin_list import PluginList
 from nanobrew.presentation.http.server import Server
+
+from nanobrew.infrastructure.stub.sensor_repository import StubSensorRepository
 
 async def init_plugins(app: App):
     logging.debug("Initiating plugins")
@@ -13,11 +18,15 @@ async def init_plugins(app: App):
     await plugins.activate(app)
 
 async def init_brewery(app: App):
-    # Create brewery with SensorList, ActorList, HeatingLogicList and KettleList.
-    # brewery = Brewery()
+    sensors = StubSensorRepository(app)
 
-    # Then register the brewery on the application.
-    pass
+    brewery = Brewery(
+        await sensors.findAll(),
+        ActorList(),
+        KettleList()
+    )
+
+    await app.set_brewery(brewery)
 
 async def init_webserver(app: App):
     logging.debug("Initiating webserver")

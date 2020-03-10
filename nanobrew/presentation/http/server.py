@@ -15,8 +15,10 @@ class Server:
         self.web_app['nanobrew'] = nanobrew_app
 
     async def handle(self, request):
+        nanobrew = await request.app['nanobrew'].getName()
         name = request.match_info.get('name', "Anonymous")
-        text = "Hello, " + name + ", " + await request.app['nanobrew'].foo()
+
+        text = "Hello world from %s. Welcome, %s" % (name, nanobrew)
         print(text)
         await asyncio.sleep(0)
 
