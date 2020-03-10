@@ -1,10 +1,10 @@
 import asyncio
 
 from nanobrew.domain.sensor_type import SensorType
-from nanobrew.domain.config.parameter import Parameter
-from nanobrew.domain.config.option import Option
-from nanobrew.domain.config.option_list import OptionList
-from nanobrew.domain.config.parameter_list import ParameterList
+from nanobrew.domain.parameter import Parameter
+from nanobrew.domain.option import Option
+from nanobrew.domain.option_list import OptionList
+from nanobrew.domain.parameter_list import ParameterList
 
 class DummySensorType(SensorType):
     last: float = 0

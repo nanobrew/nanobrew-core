@@ -1,5 +1,5 @@
-from nanobrew.domain.config.option_list import OptionList
-from nanobrew.domain.config.parameter_list import ParameterList
+from nanobrew.domain.option_list import OptionList
+from nanobrew.domain.parameter_list import ParameterList
 
 class SensorType:
     async def read(self, parameters: ParameterList):
