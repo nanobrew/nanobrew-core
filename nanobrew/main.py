@@ -8,7 +8,7 @@ from nanobrew.domain.sensor_list import SensorList
 from nanobrew.domain.actor_list import ActorList
 from nanobrew.domain.kettle_list import KettleList
 from nanobrew.application.plugin_list import PluginList
-from nanobrew.presentation.http.server import Server
+from nanobrew.entrypoint.http.server import Server
 
 from nanobrew.infrastructure.stub.sensor_repository import StubSensorRepository
 
@@ -18,6 +18,7 @@ async def init_plugins(app: App):
     await plugins.activate(app)
 
 async def init_brewery(app: App):
+    # @TODO Move this to the app itself. Makes many more sense? I guess.
     sensors = StubSensorRepository(app)
 
     brewery = Brewery(

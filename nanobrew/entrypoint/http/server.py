@@ -1,10 +1,14 @@
 import asyncio
 import logging
 
-from nanobrew.app import App as Nanobrew
 from aiohttp import web
-from aiohttp.web import AppRunner
-from aiohttp.web import TCPSite
+from aiohttp.web import AppRunner, TCPSite
+from aiohttp_graphql import GraphQLView
+from graphene import ObjectType, Schema, String
+
+from nanobrew.entrypoint.http.graphql.root_query import RootQuery
+
+from nanobrew.app import App as Nanobrew
 
 class Server:
     def __init__(self, nanobrew_app: Nanobrew):
@@ -12,6 +16,12 @@ class Server:
         self.web_app.add_routes([
             web.get('/', self.handle)
         ])
+
+        # @TODO Move this to the graphql module, and have it attach to the app.
+        schema = Schema(query=RootQuery)
+
+        GraphQLView.attach(self.web_app, schema=schema, graphiql=True)
+
         self.web_app['nanobrew'] = nanobrew_app
 
     async def handle(self, request):
