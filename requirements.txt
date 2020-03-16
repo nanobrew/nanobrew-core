@@ -1,4 +1,5 @@
 aiohttp==3.6.2
+aiohttp-graphql==1.0.0
 aiosqlite==0.11.0
 aniso8601==7.0.0
 astroid==2.3.3
@@ -8,6 +9,7 @@ chardet==3.0.4
 graphene==2.1.8
 graphql-core==2.3.1
 graphql-relay==2.0.1
+graphql-server-core==1.2.0
 idna==2.9
 isort==4.3.21
 lazy-object-proxy==1.4.3
@@ -15,6 +17,7 @@ mccabe==0.6.1
 multidict==4.7.5
 promise==2.3
 pylint==2.4.4
+pytest-runner==5.2
 rope==0.16.0
 Rx==1.6.1
 six==1.14.0
