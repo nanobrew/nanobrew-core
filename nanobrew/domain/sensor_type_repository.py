@@ -6,8 +6,9 @@ class SensorTypeRepository:
     def __init__(self):
         self._sensor_types = {}
 
-    def add_sensor_type(self, type_name: str, sensor_type: SensorType):
+    async def add_sensor_type(self, type_name: str, sensor_type: SensorType):
         self._sensor_types[type_name] = sensor_type
+        return
 
     def fetch(self, type_name) -> SensorType:
         if type_name not in self._sensor_types:

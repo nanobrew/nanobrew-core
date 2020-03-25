@@ -1,0 +1,7 @@
+values:
+    scalar_value: 42
+
+services:
+    sensor_types:
+        class: SensorTypeRepository
+        module: nanobrew.domain.sensor_type_repository

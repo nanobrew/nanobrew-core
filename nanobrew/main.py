@@ -2,6 +2,10 @@ import asyncio
 import logging
 import sys
 
+import nanoinject
+
+from nanobrew.application.command_bus import CommandBus
+from nanobrew.application.container import Container
 from nanobrew.app import App
 from nanobrew.domain.brewery import Brewery
 from nanobrew.domain.sensor_list import SensorList
@@ -17,18 +21,6 @@ async def init_plugins(app: App):
     plugins = PluginList("plugins.txt")
     await plugins.activate(app)
 
-async def init_brewery(app: App):
-    # @TODO Move this to the app itself. Makes many more sense? I guess.
-    sensors = StubSensorRepository(app)
-
-    brewery = Brewery(
-        await sensors.findAll(),
-        ActorList(),
-        KettleList()
-    )
-
-    await app.set_brewery(brewery)
-
 async def init_webserver(app: App):
     logging.debug("Initiating webserver")
     server = Server(app)
@@ -37,10 +29,20 @@ async def init_webserver(app: App):
 async def main():
     logging.info("Starting nanobrew")
 
-    app = App()
+    container = Container(get_container())
+    command_bus = CommandBus(container)
+    app = App(command_bus)
+
     await init_plugins(app)
-    await init_brewery(app)
     await init_webserver(app)
+
+def get_container():
+    container = nanoinject.Container()
+    config = nanoinject.Config.from_yaml_file('config/services.yaml')
+    config.configure(container)
+
+    return container
+
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 

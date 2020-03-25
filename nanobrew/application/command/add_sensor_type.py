@@ -1,3 +1,6 @@
+from __future__ import annotations
+import logging
+
 from ..base_command import BaseCommand
 from ..container import Container
 from ...domain.sensor_type import SensorType
@@ -11,8 +14,11 @@ class AddSensorType(BaseCommand):
         self.type_name = type_name
         self.sensor_type = sensor_type
 
-    def get_handler(self, container: Container) -> self.Handler:
-        return self.Handler(container.get_service('sensor_types'))
+    def get_handler(self, container: Container):
+        sensor_types = container.get_service('sensor_types')
+        logging.debug(sensor_types)
+
+        return self.Handler(sensor_types)
 
     class Handler:
         _sensor_types: SensorTypeRepository
@@ -21,4 +27,8 @@ class AddSensorType(BaseCommand):
             self._sensor_types = sensor_types
 
         async def handle(self, command: AddSensorType):
-            return await self._sensor_types.add_sensor_type(command.type_name, command.sensor_type)
+            sensor_types = self._sensor_types
+            type_name = command.type_name
+            sensor_type = command.sensor_type
+
+            return await sensor_types.add_sensor_type(type_name, sensor_type)
