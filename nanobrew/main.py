@@ -5,6 +5,7 @@ import sys
 import nanoinject
 
 from nanobrew.application.command_bus import CommandBus
+from nanobrew.application.command.activate_sensors import ActivateSensors
 from nanobrew.application.container import Container
 from nanobrew.app import App
 from nanobrew.domain.brewery import Brewery
@@ -35,6 +36,8 @@ async def main():
 
     await init_plugins(app)
     await init_webserver(app)
+
+    await app.run_command(ActivateSensors())
 
 def get_container():
     container = nanoinject.Container()

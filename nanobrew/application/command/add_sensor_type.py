@@ -27,8 +27,4 @@ class AddSensorType(BaseCommand):
             self._sensor_types = sensor_types
 
         async def handle(self, command: AddSensorType):
-            sensor_types = self._sensor_types
-            type_name = command.type_name
-            sensor_type = command.sensor_type
-
-            return await sensor_types.add_sensor_type(type_name, sensor_type)
+            return await self._sensor_types.add_sensor_type(command.type_name, command.sensor_type)
