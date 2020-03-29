@@ -1,5 +1,0 @@
-CREATE TABLE delta (
-  delta_number TEXT PRIMARY KEY,
-  delta_name TEXT NOT NULL,
-  executed TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
