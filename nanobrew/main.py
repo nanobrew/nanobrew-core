@@ -3,19 +3,15 @@ import logging
 import sys
 
 import nanoinject
+import yaml
 
-from nanobrew.application.command_bus import CommandBus
-from nanobrew.application.command.activate_sensors import ActivateSensors
-from nanobrew.application.container import Container
 from nanobrew.app import App
-from nanobrew.domain.brewery import Brewery
-from nanobrew.domain.sensor_list import SensorList
-from nanobrew.domain.actor_list import ActorList
-from nanobrew.domain.kettle_list import KettleList
+from nanobrew.application.command.activate_sensors import ActivateSensors
+from nanobrew.application.command_bus import CommandBus
+from nanobrew.application.container import Container
 from nanobrew.application.plugin_list import PluginList
+from nanobrew.config import Config
 from nanobrew.entrypoint.http.server import Server
-
-from nanobrew.infrastructure.stub.sensor_repository import StubSensorRepository
 
 async def init_plugins(app: App):
     logging.debug("Initiating plugins")
@@ -32,7 +28,7 @@ async def main():
 
     container = Container(get_container())
     command_bus = CommandBus(container)
-    app = App(command_bus)
+    app = App(command_bus, get_config())
 
     await init_plugins(app)
     await init_webserver(app)
@@ -41,11 +37,13 @@ async def main():
 
 def get_container():
     container = nanoinject.Container()
-    config = nanoinject.Config.from_yaml_file('config/services.yaml')
-    config.configure(container)
+    container_config = nanoinject.Config.from_yaml_file('config/services.yaml')
+    container_config.configure(container)
 
     return container
 
+def get_config():
+    return Config.from_yaml_file('config/config.yaml')
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
 
