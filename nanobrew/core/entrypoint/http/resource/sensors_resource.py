@@ -1,18 +1,20 @@
 from aiohttp import web
 
 from ....application import CommandBus, QueryBus
+from ....application.query.fetch_sensors import FetchSensors
 
 class SensorsResource:
     _commands: CommandBus
     _queries: QueryBus
     
-    def __init__(self, commands, queries):
+    def __init__(self, commands: CommandBus, queries: QueryBus):
         self._commands = commands
         self._queries = queries
 
     async def handle_get(self, request):
-        return web.json_response({
-        })
+        sensors = await self._queries.run_query(FetchSensors())
+
+        return web.json_response(sensors)
 
     async def handle_post(self, request):
         return web.json_response({

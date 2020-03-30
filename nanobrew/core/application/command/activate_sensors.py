@@ -21,5 +21,5 @@ class ActivateSensors(BaseCommand):
 
         async def handle(self, command: ActivateSensors):
             sensor_list = await self._sensors.fetch_all()
-            for sensor in sensor_list:
+            for sensor in sensor_list.values():
                 await sensor.activate()

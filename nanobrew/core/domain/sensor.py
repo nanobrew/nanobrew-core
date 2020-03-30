@@ -23,3 +23,10 @@ class Sensor:
 
             self._last = temperature
             await asyncio.sleep(5)
+
+    def to_dict(self):
+        return {
+            'name': self._parameters.getParameter('name'),
+            'sensor_id': self._parameters.getParameter('sensor_id'),
+            'sensor_type': self._parameters.getParameter('sensor_type')
+        }

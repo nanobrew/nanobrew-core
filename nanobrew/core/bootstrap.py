@@ -72,6 +72,6 @@ class Bootstrap:
 
     def get_query_bus(self):
         if self._queries is None:
-            self._queries = QueryBus()
+            self._queries = QueryBus(self.get_container())
 
         return self._queries

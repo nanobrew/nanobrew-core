@@ -3,10 +3,10 @@ from __future__ import annotations
 from .container import Container
 
 
-class BaseCommand:
+class BaseQuery:
     def get_handler(self, container: Container):
         raise NotImplementedError
 
-    class BaseHandler:
-        async def handle(self, command: BaseCommand):
+    class Handler:
+        async def handle(self, query: BaseQuery):
             raise NotImplementedError

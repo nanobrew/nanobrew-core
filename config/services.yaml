@@ -1,5 +1,5 @@
 values:
-    scalar_value: 42
+    database_name: "nanobrew.db"
 
 services:
     sensor_types:
@@ -10,4 +10,11 @@ services:
         class: SqliteSensorRepository
         module: nanobrew.core.infrastructure.sqlite.sensor_repository
         dependencies:
+            - sqlite_connection
             - sensor_types
+
+    sqlite_connection:
+        class: Connection
+        module: nanobrew.core.infrastructure.sqlite.connection
+        dependencies:
+            - value:database_name
