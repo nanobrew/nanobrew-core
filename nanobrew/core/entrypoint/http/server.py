@@ -4,23 +4,31 @@ import logging
 from aiohttp import web
 from aiohttp.web import AppRunner, TCPSite
 
-from ...app import App as Nanobrew
-from ...config import Config
+from ...application.command_bus import CommandBus
+from ...application.config import Config
+from ...application.event_bus import EventBus
+from ...application.query_bus import QueryBus
 
 class Server:
     _web_app: web.Application
-    _nanobrew_app = Nanobrew
-    _config: Config
 
-    def __init__(self, nanobrew_app: Nanobrew):
-        self._nanobrew_app = nanobrew_app
-        self._config = nanobrew_app.get_config()
+    _config: Config
+    _commands: CommandBus
+    _events: EventBus
+    _queries: QueryBus
+
+    def __init__(self, config: Config, commands: CommandBus, events: EventBus, queries: QueryBus):
+        self._commands = commands
+        self._events = events
+        self._queries = queries
+        self._config = config
+
         self._web_app = web.Application()
         self._web_app.add_routes([
             web.get('/', self.handle)
         ])
 
-        self._web_app['nanobrew'] = nanobrew_app
+        # self._web_app['nanobrew'] = nanobrew_app
 
     async def handle(self, request):
         text = "Hello world from Nanobrew."

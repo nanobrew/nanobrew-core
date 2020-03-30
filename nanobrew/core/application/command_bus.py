@@ -7,7 +7,7 @@ class CommandBus:
     def __init__(self, container: Container):
         self._container = container
 
-    async def handle(self, command: BaseCommand):
+    async def run_command(self, command: BaseCommand):
         handler = command.get_handler(self._container)
 
         return await handler.handle(command)
