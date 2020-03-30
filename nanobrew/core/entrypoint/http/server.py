@@ -8,6 +8,7 @@ from ...application.command_bus import CommandBus
 from ...application.config import Config
 from ...application.event_bus import EventBus
 from ...application.query_bus import QueryBus
+from .resource.sensors_resource import SensorsResource
 
 class Server:
     _web_app: web.Application
@@ -23,12 +24,11 @@ class Server:
         self._queries = queries
         self._config = config
 
-        self._web_app = web.Application()
-        self._web_app.add_routes([
-            web.get('/', self.handle)
-        ])
+        self._web_app = self._configure(web.Application(), commands, queries)
 
-        # self._web_app['nanobrew'] = nanobrew_app
+        self._web_app.add_routes([
+            web.get('/', self.handle),
+        ])
 
     async def handle(self, request):
         text = "Hello world from Nanobrew."
@@ -44,3 +44,13 @@ class Server:
         site = TCPSite(runner, host, port)
         logging.info("Running nanobrew on %s:%d" % (host, port))
         await site.start()
+
+    def _configure(self, app: web.Application, commands, queries):
+        resources = [
+            SensorsResource(commands, queries)
+        ]
+
+        for resource in resources:
+            resource.attach(app)
+
+        return app
