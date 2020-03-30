@@ -1,8 +1,8 @@
 import logging
 
-from nanobrew.application.command.add_sensor_type import AddSensorType
-from nanobrew.app import App
-from nanobrew.domain.parameter import Parameter
+from nanobrew.core.app import App
+from nanobrew.core.application.command.add_sensor_type import AddSensorType
+from nanobrew.core.domain.parameter import Parameter
 
 from .dummy import DummySensorType
 

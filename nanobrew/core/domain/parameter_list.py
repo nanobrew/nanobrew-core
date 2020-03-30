@@ -1,4 +1,4 @@
-from nanobrew.domain.parameter import Parameter
+from .parameter import Parameter
 
 class ParameterList:
     def __init__(self, parameters: dict = {}):

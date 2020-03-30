@@ -1,4 +1,4 @@
-from nanobrew.domain.sensor_list import SensorList
+from .sensor_list import SensorList
 
 class SensorRepository:
     async def fetch_all(self) -> SensorList:

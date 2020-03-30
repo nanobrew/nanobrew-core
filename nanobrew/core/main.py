@@ -5,13 +5,13 @@ import sys
 import nanoinject
 import yaml
 
-from nanobrew.app import App
-from nanobrew.application.command.activate_sensors import ActivateSensors
-from nanobrew.application.command_bus import CommandBus
-from nanobrew.application.container import Container
-from nanobrew.application.plugin_list import PluginList
-from nanobrew.config import Config
-from nanobrew.entrypoint.http.server import Server
+from .app import App
+from .application.command.activate_sensors import ActivateSensors
+from .application.command_bus import CommandBus
+from .application.container import Container
+from .application.plugin_list import PluginList
+from .config import Config
+from .entrypoint.http.server import Server
 
 async def init_plugins(app: App):
     logging.debug("Initiating plugins")

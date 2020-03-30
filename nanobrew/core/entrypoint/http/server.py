@@ -4,8 +4,8 @@ import logging
 from aiohttp import web
 from aiohttp.web import AppRunner, TCPSite
 
-from nanobrew.app import App as Nanobrew
-from nanobrew.config import Config
+from ...app import App as Nanobrew
+from ...config import Config
 
 class Server:
     _web_app: web.Application

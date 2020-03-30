@@ -1,6 +1,3 @@
-from nanobrew.domain.brewery import Brewery
-from nanobrew.domain.sensor_type import SensorType
-
 from .application.base_command import BaseCommand
 from .application.container import Container
 from .application.command_bus import CommandBus

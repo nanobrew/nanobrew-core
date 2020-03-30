@@ -1,4 +1,4 @@
-from nanobrew.domain.sensor import Sensor
+from .sensor import Sensor
 
 class SensorList:
     _sensors: dict = {}

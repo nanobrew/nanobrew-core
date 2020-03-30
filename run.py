@@ -1,3 +1,3 @@
-from nanobrew.main import main
+from nanobrew.core.main import main
 
 main()

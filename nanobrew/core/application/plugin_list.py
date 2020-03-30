@@ -2,7 +2,7 @@ import importlib
 import logging
 import sys
 
-from nanobrew.app import App
+from ..app import App
 
 class PluginList:
     _plugins: list
