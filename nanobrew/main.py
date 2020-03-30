@@ -28,7 +28,7 @@ async def main():
 
     container = Container(get_container())
     command_bus = CommandBus(container)
-    app = App(command_bus, get_config())
+    app = App(container, command_bus, get_config())
 
     await init_plugins(app)
     await init_webserver(app)

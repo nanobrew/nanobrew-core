@@ -3,12 +3,9 @@ import logging
 
 from aiohttp import web
 from aiohttp.web import AppRunner, TCPSite
-from aiohttp_graphql import GraphQLView
-from graphene import ObjectType, Schema, String
 
 from nanobrew.app import App as Nanobrew
 from nanobrew.config import Config
-from .graphql.root_query import RootQuery
 
 class Server:
     _web_app: web.Application
@@ -22,11 +19,6 @@ class Server:
         self._web_app.add_routes([
             web.get('/', self.handle)
         ])
-
-        # @TODO Move this to the graphql module, and have it attach to the app.
-        schema = Schema(query=RootQuery)
-
-        GraphQLView.attach(self._web_app, schema=schema, graphiql=True)
 
         self._web_app['nanobrew'] = nanobrew_app
 
