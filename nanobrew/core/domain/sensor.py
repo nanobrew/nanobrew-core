@@ -5,10 +5,12 @@ from .parameter_list import ParameterList
 
 class Sensor:
     _last: float = 0
+    _sensor_name: str = None
     _sensor_type: SensorType = None
     _parameters: ParameterList = None
 
-    def __init__(self, sensor_type: SensorType, parameters: ParameterList):
+    def __init__(self, sensor_name, sensor_type: SensorType, parameters: ParameterList):
+        self._sensor_name = sensor_name
         self._sensor_type = sensor_type
         self._parameters = parameters
 
@@ -26,9 +28,7 @@ class Sensor:
 
     async def to_dict(self):
         return {
-            'name': self._parameters.getParameter('name'),
-            'id': self._parameters.getParameter('sensor_id'),
-            'type': self._parameters.getParameter('sensor_type'),
+            'name': self._sensor_name,
             'value': await self._sensor_type.read(self._parameters),
             'unit': self._sensor_type.get_unit().to_dict()
         }

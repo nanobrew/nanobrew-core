@@ -7,8 +7,14 @@ services:
         module: nanobrew.core.domain.sensor_type_repository
 
     sensors:
-        class: SqliteSensorRepository
-        module: nanobrew.core.infrastructure.sqlite.sensor_repository
+        class: SensorRepository
+        module: nanobrew.core.domain.sensor_repository
+        dependencies:
+            - sensors_sqlite
+
+    sensors_sqlite:
+        class: SqliteSensorDataMapper
+        module: nanobrew.core.infrastructure.sqlite.sensor_data_mapper
         dependencies:
             - sqlite_connection
             - sensor_types

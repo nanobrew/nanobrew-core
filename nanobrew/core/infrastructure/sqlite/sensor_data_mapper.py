@@ -1,11 +1,11 @@
 from ...domain.parameter_list import ParameterList
 from ...domain.sensor import Sensor
-from ...domain.sensor_repository import SensorRepository
+from ...domain.sensor_data_mapper import SensorDataMapper
 from ...domain.sensor_type_repository import SensorTypeRepository
 from .connection import Connection
 
 
-class SqliteSensorRepository(SensorRepository):
+class SqliteSensorDataMapper(SensorDataMapper):
     _sensor_types: SensorTypeRepository
     _connection: Connection
 
@@ -21,12 +21,8 @@ class SqliteSensorRepository(SensorRepository):
 
         sensors = {}
         for row in cursor:
-            sensor_type = self._sensor_types.fetch(row['sensor_type'])
+            sensor_type = self._sensor_types.create(row['sensor_type'])
 
-            sensors[row['sensor_id']] = Sensor(sensor_type, ParameterList({
-                'name': row['name'],
-                'sensor_id': row['sensor_id'],
-                'sensor_type': row['sensor_type'],
-            }))
+            sensors[row['sensor_id']] = Sensor(row['name'], sensor_type, ParameterList())
 
         return sensors
