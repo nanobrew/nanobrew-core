@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+import aiohttp_cors
 from aiohttp import web
 from aiohttp.web import AppRunner, TCPSite
 
@@ -52,5 +53,19 @@ class Server:
 
         for resource in resources:
             resource.attach(app)
+
+        return self._configure_cors(app)
+
+    def _configure_cors(self, app: web.Application):
+        cors = aiohttp_cors.setup(app, defaults={
+            "*": aiohttp_cors.ResourceOptions(
+                allow_credentials=True,
+                expose_headers="*",
+                allow_headers="*",
+            )
+        })
+
+        for route in list(app.router.routes()):
+            cors.add(route)
 
         return app
