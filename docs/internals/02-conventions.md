@@ -1,5 +1,12 @@
 # Conventions
 
+## Measurements
+
+* Measurements are always communicated in the following units;
+    * Volume in liters;
+    * Temperature in degrees Celcius;
+    * Pressure in kilo Pascal
+
 ## Database naming
 
 * Database table names are singular.

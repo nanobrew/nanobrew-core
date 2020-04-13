@@ -17,16 +17,18 @@ class Sensor:
 
     async def _read(self):
         while True:
-            temperature = await self._sensor_type.read(self._sensor_type, self._parameters)
+            temperature = await self._sensor_type.read(self._parameters)
             if temperature != self._last:
                 print("Temperature changed to %s" % temperature)
 
             self._last = temperature
             await asyncio.sleep(5)
 
-    def to_dict(self):
+    async def to_dict(self):
         return {
             'name': self._parameters.getParameter('name'),
-            'sensor_id': self._parameters.getParameter('sensor_id'),
-            'sensor_type': self._parameters.getParameter('sensor_type')
+            'id': self._parameters.getParameter('sensor_id'),
+            'type': self._parameters.getParameter('sensor_type'),
+            'value': await self._sensor_type.read(self._parameters),
+            'unit': self._sensor_type.get_unit().to_dict()
         }

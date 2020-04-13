@@ -2,6 +2,5 @@ from ...domain.sensor import Sensor
 
 
 class SensorMapper:
-    @classmethod
-    def sensor_to_dict(cls, sensor: Sensor):
-        return sensor.to_dict()
+    async def sensor_to_dict(self, sensor: Sensor):
+        return await sensor.to_dict()

@@ -18,5 +18,6 @@ class FetchSensors(BaseQuery):
 
         async def handle(self, query: FetchSensors):
             sensors = await self._sensors.fetch_all()
+            mapper = SensorMapper()
 
-            return {key: SensorMapper.sensor_to_dict(sensor) for key, sensor in sensors.items()}
+            return {key: await mapper.sensor_to_dict(sensor) for key, sensor in sensors.items()}
