@@ -31,3 +31,19 @@ class SqliteSensorDataMapper(SensorDataMapper):
             )
 
         return sensors
+
+    async def persist(self, sensor: Sensor):
+        connection = await self._connection.get_connection()
+
+        await connection.execute(
+            'INSERT INTO sensor (sensor_id, sensor_type, name) VALUES (?, ?, ?)',
+            (
+                sensor.get_id(),
+                sensor.get_type_name(),
+                sensor.get_name()
+            )
+        )
+
+        await connection.commit()
+
+        return connection.total_changes > 0

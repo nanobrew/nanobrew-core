@@ -10,7 +10,7 @@ class SensorType:
     def get_unit(self) -> Unit:
         raise NotImplementedError
 
-    async def options(self) -> OptionList:
+    def get_options(self) -> OptionList:
         raise NotImplementedError
 
     def get_name(self):

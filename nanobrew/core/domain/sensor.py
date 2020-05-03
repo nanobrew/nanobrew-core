@@ -1,4 +1,5 @@
 import asyncio
+import uuid
 
 from .event.sensor_value_changed import SensorValueChanged
 from .event_listener import EventListener
@@ -18,6 +19,21 @@ class Sensor:
         self._sensor_name = sensor_name
         self._sensor_type = sensor_type
         self._parameters = parameters
+
+    async def persist(self, repository):
+        if self._sensor_id is None:
+            self._sensor_id = str(uuid.uuid4())
+
+        return await repository.persist(self)
+
+    def get_id(self):
+        return self._sensor_id
+
+    def get_type_name(self):
+        return self._sensor_type.get_name()
+
+    def get_name(self):
+        return self._sensor_name
 
     async def activate(self, listener: EventListener):
         asyncio.create_task(self._read(listener))

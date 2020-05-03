@@ -16,13 +16,12 @@ class AddSensorType(BaseCommand):
 
     def get_handler(self, container: Container):
         sensor_types = container.get_service('sensor_types')
-        logging.debug(sensor_types)
 
         return self.Handler(sensor_types)
 
     class Handler:
         _sensor_types: SensorTypeRepository
-        
+
         def __init__(self, sensor_types: SensorTypeRepository):
             self._sensor_types = sensor_types
 

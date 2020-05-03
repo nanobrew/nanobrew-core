@@ -23,6 +23,7 @@ class DummySensorType(SensorType):
     def get_options(self) -> OptionList:
         return OptionList({
             'step': Enum(
+                True,
                 'Step size',
                 {
                     '0.1': 0.1,
@@ -34,6 +35,7 @@ class DummySensorType(SensorType):
                 'The step the dummy should be increased with on every tick'
             ),
             'start': Number(
+                True,
                 'Start',
                 'The value the sensor should start with'
             )
