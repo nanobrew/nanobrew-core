@@ -66,7 +66,7 @@ class Bootstrap:
 
     def get_event_bus(self):
         if self._events is None:
-            self._events = EventBus()
+            self._events = self.get_container().get_service('event_bus')
 
         return self._events
 

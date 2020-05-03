@@ -1,6 +1,7 @@
 import asyncio
 import logging
 
+import aiohttp
 import aiohttp_cors
 from aiohttp import web
 from aiohttp.web import AppRunner, TCPSite
@@ -10,6 +11,8 @@ from ...application.config import Config
 from ...application.event_bus import EventBus
 from ...application.query_bus import QueryBus
 from .resource.sensors_resource import SensorsResource
+from .resource.websocket_resource import WebsocketResource
+
 
 class Server:
     _web_app: web.Application
@@ -25,7 +28,12 @@ class Server:
         self._queries = queries
         self._config = config
 
-        self._web_app = self._configure(web.Application(), commands, queries)
+        self._web_app = self._configure(
+            web.Application(),
+            commands,
+            queries,
+            events
+        )
 
         self._web_app.add_routes([
             web.get('/', self.handle),
@@ -46,9 +54,10 @@ class Server:
         logging.info("Running nanobrew on %s:%d" % (host, port))
         await site.start()
 
-    def _configure(self, app: web.Application, commands, queries):
+    def _configure(self, app: web.Application, commands, queries, events):
         resources = [
-            SensorsResource(commands, queries)
+            SensorsResource(commands, queries),
+            WebsocketResource(commands, queries, events)
         ]
 
         for resource in resources:

@@ -23,6 +23,11 @@ class SqliteSensorDataMapper(SensorDataMapper):
         for row in cursor:
             sensor_type = self._sensor_types.create(row['sensor_type'])
 
-            sensors[row['sensor_id']] = Sensor(row['name'], sensor_type, ParameterList())
+            sensors[row['sensor_id']] = Sensor(
+                row['sensor_id'],
+                row['name'],
+                sensor_type,
+                ParameterList()
+            )
 
         return sensors

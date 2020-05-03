@@ -12,6 +12,16 @@ services:
         dependencies:
             - sensors_sqlite
 
+    event_listener:
+        class: EventListener
+        module: nanobrew.core.application.event_listener
+        dependencies:
+            - event_bus
+
+    event_bus:
+        class: EventBus
+        module: nanobrew.core.application.event_bus
+
     sensors_sqlite:
         class: SqliteSensorDataMapper
         module: nanobrew.core.infrastructure.sqlite.sensor_data_mapper
