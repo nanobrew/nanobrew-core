@@ -12,6 +12,12 @@ class SensorTypeRepository:
     async def fetch_all(self):
         return self._sensor_types
 
+    async def create(self, type_name) -> SensorType:
+        if type_name not in self._sensor_types:
+            raise KeyError('Undefined sensor type "%s"' % type_name)
+
+        return self._sensor_types[type_name]()
+
     async def get_by_type_name(self, type_name) -> SensorType:
         if type_name not in self._sensor_types:
             raise KeyError('Undefined sensor type "%s"' % type_name)

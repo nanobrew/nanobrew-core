@@ -44,7 +44,7 @@ class AddSensor(BaseCommand):
             self._event_listener = event_listener
 
         async def handle(self, command: AddSensor):
-            sensor_type = await self._sensor_types.get_by_type_name(command.get_sensor_type())
+            sensor_type = await self._sensor_types.create(command.get_sensor_type())
             parameters = ParameterList.from_dict(command.get_parameters())
             options = sensor_type.get_options()
 

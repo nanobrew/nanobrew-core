@@ -9,5 +9,5 @@ async def activate(commands=None, **kwargs):
     logging.info("Activating dummy sensor plugin")
 
     # Add the sensor type to the nanobrew interface.
-    command = AddSensorType('dummy', DummySensorType())
+    command = AddSensorType('dummy', DummySensorType)
     await commands.run_command(command)

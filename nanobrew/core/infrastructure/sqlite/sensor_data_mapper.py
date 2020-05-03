@@ -21,7 +21,7 @@ class SqliteSensorDataMapper(SensorDataMapper):
 
         sensors = {}
         for row in cursor:
-            sensor_type = await self._sensor_types.get_by_type_name(row['sensor_type'])
+            sensor_type = await self._sensor_types.create(row['sensor_type'])
 
             sensors[row['sensor_id']] = Sensor(
                 row['sensor_id'],
