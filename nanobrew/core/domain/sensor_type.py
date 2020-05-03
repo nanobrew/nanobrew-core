@@ -12,3 +12,9 @@ class SensorType:
 
     async def options(self) -> OptionList:
         raise NotImplementedError
+
+    def get_name(self):
+        raise NotImplementedError
+
+    async def to_dict(self):
+        raise NotImplementedError

@@ -1,3 +1,9 @@
+from .parameter import Parameter
+
+
 class Option:
-    def __init__(self):
-        pass
+    def validate(self, parameter: Parameter) -> bool:
+        raise NotImplementedError
+
+    def to_dict(self) -> dict:
+        raise NotImplementedError

@@ -10,7 +10,8 @@ from ...application.command_bus import CommandBus
 from ...application.config import Config
 from ...application.event_bus import EventBus
 from ...application.query_bus import QueryBus
-from .resource.sensors_resource import SensorsResource
+from .resource.sensor_resource import SensorResource
+from .resource.sensor_type_resource import SensorTypeResource
 from .resource.websocket_resource import WebsocketResource
 
 
@@ -56,7 +57,8 @@ class Server:
 
     def _configure(self, app: web.Application, commands, queries, events):
         resources = [
-            SensorsResource(commands, queries),
+            SensorResource(commands, queries),
+            SensorTypeResource(commands, queries),
             WebsocketResource(commands, queries, events)
         ]
 
