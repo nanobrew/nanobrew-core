@@ -2,7 +2,7 @@ from .sensor_list import SensorList
 from .sensor_data_mapper import SensorDataMapper
 
 class SensorRepository:
-    '''This class is a caching decorator over concrete repositories'''
+    '''This class is a caching decorator over a concrete data mapper'''
     _sensors: dict = {}
     _repository: SensorDataMapper
 
