@@ -1,14 +1,34 @@
-from .option_list import OptionList
-from .parameter_list import ParameterList
+from .options import Options
 from .unit import Unit
 
 
 class SensorType:
-    async def read(self, parameters: ParameterList):
-        raise NotImplementedError
+    _name: str
+    _options: dict
+    _factory: callable
+    _unit: Unit
+
+    def __init__(self, name: str, options: Options, factory: callable, unit: Unit):
+        self._name = name
+        self._options = options
+        self._factory = factory
+        self._unit = unit
 
     def get_unit(self) -> Unit:
-        raise NotImplementedError
+        return self._unit
 
-    async def options(self) -> OptionList:
-        raise NotImplementedError
+    def get_options(self) -> Options:
+        return self._options
+
+    def get_name(self):
+        return self._name
+
+    async def to_dict(self):
+        return {
+            'name': self._name,
+            'options': self._options.to_dict(),
+            'unit': self._unit.to_dict()
+        }
+
+    async def create_reader(self, parameters: dict):
+        return await self._factory(parameters)

@@ -9,3 +9,6 @@ class Temperature(Unit):
 
     def get_symbol(self):
         return u'°C'
+
+    def get_precision(self):
+        return 2

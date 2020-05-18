@@ -1,0 +1,1 @@
+from .register_sensor_type import RegisterSensorType
