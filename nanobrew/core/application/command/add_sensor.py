@@ -2,8 +2,6 @@ from __future__ import annotations
 
 import logging
 
-from ...domain.parameter import Parameter
-from ...domain.parameter_list import ParameterList
 from ...domain.sensor import Sensor
 from ...domain.sensor_repository import SensorRepository
 from ...domain.sensor_type_repository import SensorTypeRepository

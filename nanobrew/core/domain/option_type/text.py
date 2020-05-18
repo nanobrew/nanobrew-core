@@ -1,5 +1,4 @@
 from ..option import Option
-from ..parameter import Parameter
 
 
 class Text(Option):
@@ -16,7 +15,7 @@ class Text(Option):
             option['description']
         )
 
-    def validate(self, value: Parameter) -> bool:
+    def validate(self, value) -> bool:
         errors = []
         if self._required and value is None:
             errors.append('Value can not be empty')

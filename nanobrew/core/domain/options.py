@@ -1,5 +1,4 @@
 from .option import Option
-from .parameter_list import ParameterList
 from .option_type.text import Text
 from .option_type.enum import Enum
 from .option_type.decimal import Decimal

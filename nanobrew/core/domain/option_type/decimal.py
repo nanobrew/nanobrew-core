@@ -1,5 +1,4 @@
 from ..option import Option
-from ..parameter import Parameter
 
 
 class Decimal(Option):

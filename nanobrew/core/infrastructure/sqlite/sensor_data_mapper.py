@@ -1,4 +1,3 @@
-from ...domain.parameter_list import ParameterList
 from ...domain.sensor import Sensor
 from ...domain.sensor_data_mapper import SensorDataMapper
 from ...domain.sensor_type_repository import SensorTypeRepository

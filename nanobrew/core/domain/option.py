@@ -1,8 +1,5 @@
-from .parameter import Parameter
-
-
 class Option:
-    def validate(self, parameter: Parameter):
+    def validate(self, value):
         raise NotImplementedError
 
     @classmethod

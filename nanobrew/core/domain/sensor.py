@@ -3,7 +3,6 @@ import uuid
 
 from .event.sensor_value_changed import SensorValueChanged
 from .event_listener import EventListener
-from .parameter_list import ParameterList
 from .sensor_type import SensorType
 
 
@@ -59,8 +58,11 @@ class Sensor:
     async def to_dict(self):
         precision = self._sensor_type.get_unit().get_precision()
 
+        # This is to prevent an error when the value is requested before the first tick is executed.
+        value = round(self._last, precision) if self._last is not None else 0.00
+
         return {
             'name': self._sensor_name,
-            'value': round(self._last, precision),
+            'value': value,
             'unit': self._sensor_type.get_unit().to_dict()
         }
