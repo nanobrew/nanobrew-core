@@ -21,13 +21,13 @@ class SqliteSensorDataMapper(SensorDataMapper):
 
         sensors = {}
         for row in cursor:
-            sensor_type = await self._sensor_types.create(row['sensor_type'])
+            sensor_type = await self._sensor_types.get_by_type_name(row['sensor_type'])
 
             sensors[row['sensor_id']] = Sensor(
                 row['sensor_id'],
                 row['name'],
                 sensor_type,
-                ParameterList()
+                await self._get_parameters(row['sensor_id'])
             )
 
         return sensors
@@ -47,3 +47,17 @@ class SqliteSensorDataMapper(SensorDataMapper):
         await connection.commit()
 
         return connection.total_changes > 0
+
+
+    async def _get_parameters(self, sensor_id: str) -> dict:
+        connection = await self._connection.get_connection()
+        cursor = await connection.execute_fetchall(
+            "SELECT name, value FROM sensor_parameter WHERE sensor_id = ?",
+            [sensor_id]
+        )
+
+        parameters = {}
+        for row in cursor:
+            parameters[row['name']] = row['value']
+
+        return parameters

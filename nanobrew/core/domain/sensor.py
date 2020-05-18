@@ -8,13 +8,14 @@ from .sensor_type import SensorType
 
 
 class Sensor:
-    _last: float = 0
-    _sensor_id: str = None
-    _sensor_name: str = None
-    _sensor_type: SensorType = None
-    _parameters: ParameterList = None
+    _last: float = None
+    _sensor_id: str
+    _sensor_name: str
+    _sensor_type: SensorType
+    _parameters: dict
+    _reader = None
 
-    def __init__(self, sensor_id, sensor_name, sensor_type: SensorType, parameters: ParameterList):
+    def __init__(self, sensor_id, sensor_name, sensor_type: SensorType, parameters: dict):
         self._sensor_id = sensor_id
         self._sensor_name = sensor_name
         self._sensor_type = sensor_type
@@ -39,18 +40,17 @@ class Sensor:
         asyncio.create_task(self._read(listener))
 
     async def _read(self, listener: EventListener):
-        while True:
-            temperature = await self._sensor_type.read(self._parameters)
-            if temperature != self._last:
-                await listener.raise_event(
-                    SensorValueChanged(
-                        self._sensor_id,
-                        temperature,
-                        self._sensor_type.get_unit()
-                    )
-                )
+        if self._reader is None:
+            self._reader = await self._sensor_type.create_reader(self._parameters)
 
-            self._last = temperature
+        while True:
+            value = await self._reader.read()
+            if value != self._last:
+                await listener.raise_event(
+                    SensorValueChanged(self._sensor_id, value, self._sensor_type.get_unit())
+                )
+                self._last = value
+
             await asyncio.sleep(5)
 
     async def to_dict(self):

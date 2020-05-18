@@ -1,13 +1,31 @@
-import logging
+from nanobrew.core.application.command import RegisterSensorType
+from nanobrew.core.distributed.options import Options
+from nanobrew.core.distributed.temperature import Temperature
 
-from nanobrew.core.application.command.add_sensor_type import AddSensorType
-from nanobrew.core.domain.parameter import Parameter
+from .dummy_sensor_reader import DummySensorReader
 
-from .dummy_sensor_type import DummySensorType
+
+async def create_reader(parameters) -> DummySensorReader:
+    return DummySensorReader(
+        parameters['start'],
+        parameters['step']
+    )
 
 async def activate(commands=None, **kwargs):
-    logging.info("Activating dummy sensor plugin")
+    options = Options()
+    options.add_enum_option(
+        True,
+        'start',
+        'the number to start the dummy sensor with',
+        ['1.0', '5.0', '10.0', '25.0']
+    )
 
-    # Add the sensor type to the nanobrew interface.
-    command = AddSensorType('dummy', DummySensorType)
-    await commands.run_command(command)
+    options.add_decimal_option(
+        True,
+        'step',
+        'the number the sensor should increase with on each tick'
+    )
+
+    await commands.run_command(
+        RegisterSensorType("dummy", options, create_reader, Temperature())
+    )
