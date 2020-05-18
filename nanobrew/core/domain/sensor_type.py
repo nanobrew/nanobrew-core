@@ -1,5 +1,4 @@
-from .option_list import OptionList
-from .parameter_list import ParameterList
+from .options import Options
 from .unit import Unit
 
 
@@ -9,7 +8,7 @@ class SensorType:
     _factory: callable
     _unit: Unit
 
-    def __init__(self, name: str, options: dict, factory: callable, unit: Unit):
+    def __init__(self, name: str, options: Options, factory: callable, unit: Unit):
         self._name = name
         self._options = options
         self._factory = factory
@@ -18,7 +17,7 @@ class SensorType:
     def get_unit(self) -> Unit:
         return self._unit
 
-    def get_options(self) -> OptionList:
+    def get_options(self) -> Options:
         return self._options
 
     def get_name(self):

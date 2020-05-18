@@ -4,6 +4,7 @@ from ...distributed.options import Options
 from ...distributed.unit import Unit
 from ...domain.sensor_type import SensorType
 from ...domain.sensor_type_repository import SensorTypeRepository
+from ...domain.options import Options as DomainOptions
 from ..base_command import BaseCommand
 from ..container import Container
 from ...domain.unit_factory import UnitFactory
@@ -36,10 +37,11 @@ class RegisterSensorType(BaseCommand):
 
         async def handle(self, command: RegisterSensorType):
             unit = self._unit_factory.create_unit(command.unit.get_unit_type())
+            options = DomainOptions.from_dict(command.options.to_dict())
 
             sensor_type = SensorType(
                 command.name,
-                command.options.to_dict(),
+                options,
                 command.factory,
                 unit
             )
