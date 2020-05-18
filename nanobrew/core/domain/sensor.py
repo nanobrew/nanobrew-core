@@ -13,6 +13,7 @@ class Sensor:
     _sensor_type: SensorType
     _parameters: dict
     _reader = None
+    _task: asyncio.Task = None
 
     def __init__(self, sensor_id, sensor_name, sensor_type: SensorType, parameters: dict):
         self._sensor_id = sensor_id
@@ -25,6 +26,12 @@ class Sensor:
             self._sensor_id = str(uuid.uuid4())
 
         return await repository.persist(self)
+
+    async def delete(self, repository):
+        if self._task is not None:
+            self._task.cancel() # Stop the task for this sensor.
+
+        await repository.delete(self)
 
     def get_id(self):
         return self._sensor_id
@@ -39,7 +46,7 @@ class Sensor:
         return self._parameters
 
     async def activate(self, listener: EventListener):
-        asyncio.create_task(self._read(listener))
+        self._task = asyncio.create_task(self._read(listener))
 
     async def _read(self, listener: EventListener):
         if self._reader is None:

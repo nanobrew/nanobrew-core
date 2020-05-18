@@ -43,9 +43,18 @@ class SqliteSensorDataMapper(SensorDataMapper):
 
         await connection.commit()
 
+    async def delete(self, sensor: Sensor):
+        connection = await self._connection.get_connection()
+
+        await connection.execute('DELETE FROM sensor_parameter WHERE sensor_id = ?', (sensor.get_id(),))
+        await connection.execute('DELETE FROM sensor WHERE sensor_id = ?', (sensor.get_id(),))
+
+        await connection.commit()
 
     async def _persist_parameters(self, sensor_id, parameters):
         connection = await self._connection.get_connection()
+
+        await connection.execute('DELETE FROM sensor_parameter WHERE sensor_id = ?', (sensor_id,))
 
         for (name, value) in parameters.items():
             await connection.execute(
