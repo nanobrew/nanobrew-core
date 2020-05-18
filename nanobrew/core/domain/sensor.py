@@ -56,6 +56,6 @@ class Sensor:
     async def to_dict(self):
         return {
             'name': self._sensor_name,
-            'value': await self._sensor_type.read(self._parameters),
+            'value': self._last,
             'unit': self._sensor_type.get_unit().to_dict()
         }

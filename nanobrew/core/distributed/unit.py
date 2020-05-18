@@ -1,2 +1,3 @@
 class Unit:
-    pass
+    def get_unit_type(self):
+        raise NotImplementedError

@@ -6,6 +6,7 @@ from ...domain.sensor_type import SensorType
 from ...domain.sensor_type_repository import SensorTypeRepository
 from ..base_command import BaseCommand
 from ..container import Container
+from ...domain.unit_factory import UnitFactory
 
 
 class RegisterSensorType(BaseCommand):
@@ -27,16 +28,20 @@ class RegisterSensorType(BaseCommand):
 
     class Handler:
         _sensor_types: SensorTypeRepository
+        _unit_factory: UnitFactory
 
         def __init__(self, sensor_types: SensorTypeRepository):
             self._sensor_types = sensor_types
+            self._unit_factory = UnitFactory()
 
         async def handle(self, command: RegisterSensorType):
+            unit = self._unit_factory.create_unit(command.unit.get_unit_type())
+
             sensor_type = SensorType(
                 command.name,
                 command.options.to_dict(),
                 command.factory,
-                command.unit
+                unit
             )
 
             return await self._sensor_types.register_sensor_type(command.name, sensor_type)
