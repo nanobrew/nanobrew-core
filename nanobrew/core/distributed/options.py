@@ -7,18 +7,14 @@ class Options:
     '''This class is a facade over options.'''
     _options: dict = {}
 
-    def add_enum_option(self, required: bool, name: str, label: str, options: dict):
-        self._options[name] = Enum(required, label, options)
+    def add_enum_option(self, required: bool, name: str, label: str, description: str, options: dict):
+        self._options[name] = Enum(required, label, description, options)
 
-    def add_decimal_option(self, required: bool, name: str, label: str):
-        self._options[name] = Decimal(required, label)
+    def add_decimal_option(self, required: bool, name: str, label: str, description: str):
+        self._options[name] = Decimal(required, label, description)
 
-    def add_text_option(self, required: bool, name: str, label: str):
-        self._options[name] = Text(required, label)
+    def add_text_option(self, required: bool, name: str, label: str, description: str):
+        self._options[name] = Text(required, label, description)
 
-    def to_dict(self):
-        options = {}
-        for (name, option) in self._options.items():
-            options[name] = option.to_dict()
-
-        return options
+    def to_dict(self) -> dict:
+        return {key: option.to_dict() for key, option in self._options.items()}

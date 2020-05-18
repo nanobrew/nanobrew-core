@@ -9,13 +9,22 @@ class Enum(Option):
         self._options = options
         self._description = description
 
-    def validate(self, parameter: Parameter):
+    @classmethod
+    def from_dict(cls, option):
+        return Enum(
+            option['required'],
+            option['label'],
+            option['options'],
+            option['description']
+        )
+
+    def validate(self, value):
         errors = []
 
-        if parameter is None:
+        if value is None:
             errors.append('Value can not be empty')
 
-        if (parameter is not None) and (parameter.get_value() not in self._options.values()):
+        if (value is not None) and (value not in self._options.values()):
             errors.append('Value is not in list of possible values')
 
         return len(errors) == 0, errors

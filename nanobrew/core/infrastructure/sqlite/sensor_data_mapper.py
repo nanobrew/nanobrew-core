@@ -37,17 +37,22 @@ class SqliteSensorDataMapper(SensorDataMapper):
 
         await connection.execute(
             'INSERT INTO sensor (sensor_id, sensor_type, name) VALUES (?, ?, ?)',
-            (
-                sensor.get_id(),
-                sensor.get_type_name(),
-                sensor.get_name()
-            )
+            (sensor.get_id(), sensor.get_type_name(), sensor.get_name())
         )
+
+        await self._persist_parameters( sensor.get_id(), sensor.get_parameters())
 
         await connection.commit()
 
-        return connection.total_changes > 0
 
+    async def _persist_parameters(self, sensor_id, parameters):
+        connection = await self._connection.get_connection()
+
+        for (name, value) in parameters.items():
+            await connection.execute(
+                'INSERT INTO sensor_parameter (sensor_id, name, value) VALUES (?, ?, ?)',
+                (sensor_id, name, value)
+            )
 
     async def _get_parameters(self, sensor_id: str) -> dict:
         connection = await self._connection.get_connection()

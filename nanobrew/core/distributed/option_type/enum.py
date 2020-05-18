@@ -2,9 +2,15 @@ from .option import Option
 
 
 class Enum(Option):
-    def __init__(self, required: bool, label: str, options: dict):
+    required: bool
+    label: str
+    description: str
+    options: dict
+
+    def __init__(self, required: bool, label: str, description: str, options: dict):
         self.required = required
         self.label = label
+        self.description = description
         self.options = options
 
     def to_dict(self):
@@ -12,5 +18,6 @@ class Enum(Option):
             'type': 'enum',
             'required': self.required,
             'label': self.label,
-            'options': self.options
+            'description': self.description,
+            'options': self.options,
         }

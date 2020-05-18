@@ -8,14 +8,18 @@ class Text(Option):
         self._label = label
         self._description = description
 
-    def validate(self, parameter: Parameter) -> bool:
+    @classmethod
+    def from_dict(cls, option):
+        return Text(
+            option['required'],
+            option['label'],
+            option['description']
+        )
+
+    def validate(self, value: Parameter) -> bool:
         errors = []
-
-        if self._required and parameter is None:
+        if self._required and value is None:
             errors.append('Value can not be empty')
-
-        if (parameter is not None) and (not str(parameter.get_value()).isdigit()):
-            errors.append('Value is not numeric')
 
         return len(errors) == 0, errors
 

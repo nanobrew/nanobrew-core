@@ -36,6 +36,9 @@ class Sensor:
     def get_name(self):
         return self._sensor_name
 
+    def get_parameters(self):
+        return self._parameters
+
     async def activate(self, listener: EventListener):
         asyncio.create_task(self._read(listener))
 

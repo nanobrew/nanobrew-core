@@ -44,9 +44,9 @@ class AddSensor(BaseCommand):
             self._event_listener = event_listener
 
         async def handle(self, command: AddSensor):
-            sensor_type = await self._sensor_types.create(command.get_sensor_type())
-            parameters = ParameterList.from_dict(command.get_parameters())
+            sensor_type = await self._sensor_types.get_by_type_name(command.get_sensor_type())
             options = sensor_type.get_options()
+            parameters = command.get_parameters()
 
             (success, errors) = options.validate(parameters)
 

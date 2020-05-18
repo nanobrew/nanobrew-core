@@ -2,26 +2,34 @@ from ..option import Option
 from ..parameter import Parameter
 
 
-class Number(Option):
+class Decimal(Option):
     def __init__(self, required: bool, label, description):
         self._required = required
         self._label = label
         self._description = description
 
-    def validate(self, parameter: Parameter) -> bool:
+    @classmethod
+    def from_dict(cls, option):
+        return Decimal(
+            option['required'],
+            option['label'],
+            option['description']
+        )
+
+    def validate(self, value) -> bool:
         errors = []
 
-        if self._required and parameter is None:
+        if self._required and value is None:
             errors.append('Value can not be empty')
 
-        if (parameter is not None) and (not str(parameter.get_value()).isdigit()):
+        if (value is not None) and (not str(value).isdigit()):
             errors.append('Value is not numeric')
 
         return len(errors) == 0, errors
 
     def to_dict(self) -> dict:
         return {
-            'option_type': 'number',
+            'option_type': 'decimal',
             'label': self._label,
             'description': self._description
         }
