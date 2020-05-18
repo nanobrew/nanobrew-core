@@ -54,8 +54,10 @@ class Sensor:
             await asyncio.sleep(5)
 
     async def to_dict(self):
+        precision = self._sensor_type.get_unit().get_precision()
+
         return {
             'name': self._sensor_name,
-            'value': self._last,
+            'value': round(self._last, precision),
             'unit': self._sensor_type.get_unit().to_dict()
         }
