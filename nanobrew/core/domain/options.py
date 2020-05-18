@@ -31,11 +31,13 @@ class Options:
             value = parameters[key] if key in parameters else None
 
             (success, errors) = option.validate(value)
-
             if success is False:
                 option_errors[key] = errors
 
         return (len(option_errors) == 0, option_errors)
+
+    def filter(self, parameters: dict) -> dict:
+        return {key: parameters[key] for key in self._options.keys()}
 
     def to_dict(self) -> dict:
         return {key: option.to_dict() for key, option in self._options.items()}

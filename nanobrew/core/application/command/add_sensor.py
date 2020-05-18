@@ -53,7 +53,8 @@ class AddSensor(BaseCommand):
             if success != True:
                 raise ValidationFailed(errors)
 
-            sensor = Sensor(None, command.get_name(), sensor_type, parameters)
+            # Use a filter to prevent unexpected and unwanted parameters.
+            sensor = Sensor(None, command.get_name(), sensor_type, options.filter(parameters))
 
             await sensor.persist(self._sensors)
             await sensor.activate(self._event_listener)
