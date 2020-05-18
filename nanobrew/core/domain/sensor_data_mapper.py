@@ -4,3 +4,6 @@ class SensorDataMapper:
 
     async def persist(self, sensor):
         raise NotImplementedError
+
+    async def delete(self, sensor):
+        raise NotImplementedError

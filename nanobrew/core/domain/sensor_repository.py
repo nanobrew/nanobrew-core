@@ -18,8 +18,19 @@ class SensorRepository:
 
         return self._sensors
 
+    async def fetch_by_id(self, sensor_id):
+        await self.fetch_all()
+        if sensor_id not in self._sensors:
+            raise KeyError('Sensor with id %s does not exist' % sensor_id)
+
+        return self._sensors[sensor_id]
+
     async def persist(self, sensor):
         await self._data_mapper.persist(sensor)
 
-        # Refetch after a change.
-        self._sensors = await self._data_mapper.fetch_all()
+        self._sensors[sensor.get_id()] = sensor
+
+    async def delete(self, sensor):
+        await self._data_mapper.delete(sensor)
+
+        del self._sensors[sensor.get_id()]

@@ -4,6 +4,7 @@ from ....application import CommandBus, QueryBus
 from ....application.error.validation_failed import ValidationFailed
 from ....application.query.fetch_sensors import FetchSensors
 from ....application.command.add_sensor import AddSensor
+from ....application.command.delete_sensor import DeleteSensor
 
 class SensorResource:
     _commands: CommandBus
@@ -39,10 +40,22 @@ class SensorResource:
                 'reason': error.get_errors()
             })
 
+    async def handle_delete(self, request):
+        sensor_id = request.match_info['sensor_id']
+
+        try:
+            await self._commands.run_command(DeleteSensor(sensor_id))
+            return web.Response(status=204)
+
+        except KeyError:
+            return web.Response(status=404)
+
+
     def attach(self, app: web.Application):
         app.add_routes([
             web.get('/sensors', self.handle_get),
-            web.post('/sensors', self.handle_post)
+            web.post('/sensors', self.handle_post),
+            web.delete('/sensors/{sensor_id}', self.handle_delete)
         ])
 
         return app
