@@ -54,6 +54,8 @@ class Sensor:
 
         while True:
             value = await self._reader.read()
+            value = round(value, self._sensor_type.get_unit().get_precision())
+
             if value != self._last:
                 await listener.raise_event(
                     SensorValueChanged(self._sensor_id, value, self._sensor_type.get_unit())
@@ -71,5 +73,7 @@ class Sensor:
         return {
             'name': self._sensor_name,
             'value': value,
-            'unit': self._sensor_type.get_unit().to_dict()
+            'type': self._sensor_type.get_name(),
+            'unit': self._sensor_type.get_unit().to_dict(),
+            'parameters': self._parameters,
         }
