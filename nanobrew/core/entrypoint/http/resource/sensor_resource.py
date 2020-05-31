@@ -4,6 +4,7 @@ from ....application import CommandBus, QueryBus
 from ....application.error.validation_failed import ValidationFailed
 from ....application.query.fetch_sensors import FetchSensors
 from ....application.command.add_sensor import AddSensor
+from ....application.command.edit_sensor import EditSensor
 from ....application.command.delete_sensor import DeleteSensor
 
 class SensorResource:
@@ -40,6 +41,25 @@ class SensorResource:
                 'reason': error.get_errors()
             })
 
+    async def handle_put(self, request):
+        body = await request.json()
+        sensor_id = request.match_info['sensor_id']
+
+        try:
+            cmd = EditSensor(sensor_id, body['name'], body['sensor_type'], body['parameters'])
+            await self._commands.run_command(cmd)
+
+            return web.json_response(status=200, data={
+                'name': body['name'],
+                'sensor_type': body['sensor_type'],
+                'parameters': body['parameters']
+            })
+
+        except ValidationFailed as error:
+            return web.json_response(status=422, data={
+                'reason': error.get_errors()
+            })
+
     async def handle_delete(self, request):
         sensor_id = request.match_info['sensor_id']
 
@@ -55,6 +75,7 @@ class SensorResource:
         app.add_routes([
             web.get('/sensors', self.handle_get),
             web.post('/sensors', self.handle_post),
+            web.put('/sensors/{sensor_id}', self.handle_put),
             web.delete('/sensors/{sensor_id}', self.handle_delete)
         ])
 

@@ -1,3 +1,5 @@
+import re
+
 from ..option import Option
 
 
@@ -21,8 +23,8 @@ class Decimal(Option):
         if self._required and value is None:
             errors.append('Value can not be empty')
 
-        if (value is not None) and (not str(value).isdigit()):
-            errors.append('Value is not numeric')
+        if (value is not None) and (not re.match(r'^\d+(\.\d{1,3})?$', str(value))):
+            errors.append('Value is not a valid decimal value')
 
         return len(errors) == 0, errors
 
