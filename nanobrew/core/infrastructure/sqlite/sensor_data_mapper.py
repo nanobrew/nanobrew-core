@@ -35,7 +35,7 @@ class SqliteSensorDataMapper(SensorDataMapper):
         connection = await self._connection.get_connection()
 
         await connection.execute(
-            'INSERT INTO sensor (sensor_id, sensor_type, name) VALUES (?, ?, ?)',
+            'REPLACE INTO sensor (sensor_id, sensor_type, name) VALUES (?, ?, ?)',
             (sensor.get_id(), sensor.get_type_name(), sensor.get_name())
         )
 

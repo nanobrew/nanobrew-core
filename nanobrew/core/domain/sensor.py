@@ -28,8 +28,7 @@ class Sensor:
         return await repository.persist(self)
 
     async def delete(self, repository):
-        if self._task is not None:
-            self._task.cancel() # Stop the task for this sensor.
+        self.deactivate()
 
         await repository.delete(self)
 
@@ -45,8 +44,22 @@ class Sensor:
     def get_parameters(self):
         return self._parameters
 
+    def rename(self, name: str):
+        self._sensor_name = name
+
+    def update_parameters(self, parameters: dict):
+        self._parameters = parameters
+
+    def change_sensor_type(self, sensor_type):
+        self._sensor_type = sensor_type
+
     async def activate(self, listener: EventListener):
         self._task = asyncio.create_task(self._read(listener))
+
+    async def deactivate(self):
+        self._reader = None
+        if self._task is not None:
+            self._task.cancel()
 
     async def _read(self, listener: EventListener):
         if self._reader is None:
